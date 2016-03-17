@@ -1,10 +1,16 @@
 .table {
     position: relative;
     width: 100%;
+		margin-top: -40px;
+}
+
+.dropdown {
+	width:200px;
 }
 
 .theaders {
     position: absolute;
+		height: 30px;
     top: 0;
     left: 0;
     display: inline-block;
@@ -16,10 +22,10 @@
 
 .thead {
     min-width: 175px;
+		height: 34px;
     display: inline-block;
     background: #fff;
     border-right: 1px solid #dde1e3;
-    padding: 10px;
 }
 
 .trows {
@@ -35,6 +41,7 @@
 
 .cell {
     width: 200px;
+		height: 30px;
     padding: 10px;
     display: inline-block;
     border-bottom: 1px solid #dde1e3;

@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames/bind';
 import styles from 'css/components/space-control';
+import {Button} from 'react-bootstrap';
+
 
 
 const cx = classNames.bind(styles);
@@ -13,7 +15,7 @@ const SheetsTab = (props) => {
 
 
   return (
-    <div className={cx('SheetTab', 'SheetButton')}>{props.sheet.name}</div>
+    <Button className={cx('SheetTab')}>{props.sheet.name}</Button>
   );
 };
 

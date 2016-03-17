@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames/bind';
 import styles from 'css/components/table';
-import { SplitButton } from 'react-bootstrap';
-import { MenuItem } from 'react-bootstrap';
+import { SplitButton, MenuItem } from 'react-bootstrap';
 
 const cx = classNames.bind(styles);
 
@@ -11,7 +10,9 @@ export default class ColumnOptions extends Component {
 	render () {
 		return (
 	  	 	<SplitButton className={cx('thead')} bsStyle='default' title={this.props.data.name} key='1' id={`dropdown-${this.props.data.name}`}>
-				{generateMenuItems()};
+					<div className={cx('dropdown')}>
+				{generateMenuItems()}
+				</div>
 		    </SplitButton>
 		);
 	}
@@ -28,4 +29,3 @@ function generateMenuItems () {
 
 	return items;
 }
-

@@ -1,4 +1,5 @@
 /* Structure Overview */
+
 const spaces = {
   SheetID: {name: '',
             sheet: {}}
@@ -26,11 +27,11 @@ const spaces = {
       grid: [
         {
           '123': {
-            type: 'string'
+            type: 'string',
             data: 'Oscar'
           },
           "124": {
-            type: 'url'
+            type: 'url',
             data: 'github.com/elpenao'
           },
           "125": {
@@ -53,8 +54,8 @@ const spaces = {
           }
         }
       ]
-    } 
-  } 
+    }
+  }
 }
 
 
@@ -66,12 +67,12 @@ const column3 = { id: '125', type: 'ref', name: 'Repos', idx: 2 }
 // {id: 126, type: 'multipleAttachment', name: 'Images', idx: 3}
 
 const cell12345 = {
-  type: 'string'
+  type: 'string',
   data: 'Oscar'
 }
 
 const cell12346 = {
-  type: 'url'
+  type: 'url',
   data: 'github.com/elpenao'
 }
 
@@ -83,12 +84,12 @@ const cell12347 = {
 
 
 const cell22345 = {
-  type: 'string'
+  type: 'string',
   data: 'Assaf'
 }
 
 const cell22346 = {
-  type: 'url'
+  type: 'url',
   data: 'github.com/apackin'
 }
 
@@ -168,4 +169,3 @@ const sheet = {
     }]
   }]
 }
-

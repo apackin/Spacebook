@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from 'css/components/space-control';
-
+import {Button} from 'react-bootstrap';
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +20,9 @@ class AddSheetButton extends Component {
 
   render() {
     return (
-      <button className={cx('AddSheetButton', 'SheetButton')} onClick={this.addSheet}>+</button>
+      <Button className={cx('AddSheetButton')}>
+      <div onClick={this.addSheet}>+</div>
+      </Button>
     );
   }
 
