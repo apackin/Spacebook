@@ -10,8 +10,11 @@ var schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  creationDate: Date,
-  workspace: { type: Schema.Types.ObjectId, ref: 'Workspace' }
+  creationDate: {
+    type: Date,
+    default: Date.now()
+  },
+  workspace: { type: mongoose.Schema.Types.ObjectId, ref: 'Workspace' }
 });
 
 // Compiles the schema into a model, opening (or creating, if
