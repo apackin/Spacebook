@@ -2,10 +2,9 @@
 @value primary-color, dark-primary-color, light-primary-color, accent-color from '../common/colors.css';
 
 .table {
-    display: inline-block;
-    position: relative;
+    display: block;
     /*width: 100%;*/
-    overflow-x: auto;
+    overflow-y: scroll;
 }
 
 
@@ -52,7 +51,7 @@
 
 .addColumn {
   width: 50px;
-  display: inline-block;
+  display: block;
   background: #fff;
   border-right: 1px solid #dde1e3;
   border-bottom: 1px solid #d1d1d1;

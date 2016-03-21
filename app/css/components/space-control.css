@@ -5,9 +5,10 @@
 }
 
 .tableBox {
-  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: scroll;
   display: block;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 115px;
   width: auto;
@@ -18,6 +19,7 @@
   position: fixed;
   top: 0;
   width: 100%;
+  display: block;
 }
 
 .BottomBar {
