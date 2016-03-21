@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Cell from './Cell';
 import classNames from 'classnames/bind';
 import styles from 'css/components/table';
+import AddRow from './AddRow';
 
 const cx = classNames.bind(styles);
 
@@ -28,9 +29,9 @@ const Grid = (props) => {
   return (
     <div className={cx('trows')}>
       {generateRows(props.grid)}
+      <AddRow />
     </div>
   );
 }
 
 export default Grid;
-

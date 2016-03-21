@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 
 import App from 'containers/App';
 import About from 'containers/About';
+import SpaceView from 'containers/SpaceView';
 import SpaceControl from 'containers/SpaceControl';
 import LoginOrRegister from 'containers/LoginOrRegister';
 import Dashboard from 'containers/Dashboard';

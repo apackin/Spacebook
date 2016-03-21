@@ -3,6 +3,8 @@ import SheetTab from './SheetTab.jsx';
 import AddSheetButton from './AddSheetButton.jsx';
 import classNames from 'classnames/bind';
 import styles from 'css/components/space-control';
+import { ContextMenu, MenuItem, ContextMenuLayer } from "react-contextmenu";
+
 
 
 const cx = classNames.bind(styles);

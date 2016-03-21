@@ -12,10 +12,9 @@ export default class Table extends Component {
 
   render () {
     return (
-      <div className={cx('table')}>
+      <div className={cx('table', 'tableBox')}>
         <Headers headers={this.props.headers} />
         <Grid grid={this.props.grid}/>
-        <AddRow />
         <RowModal className={cx('row-modal')}/>
       </div>
     );
