@@ -102,11 +102,18 @@ export function insertColumn(colIdx){
 	}
 }
 
-export function currentCell(cell) {
+export function changeCurrentCell(idx, key, data, cellType) {
   return {
-    type: types.CURRENT_CELL,
-    cell
+    type: types.CHANGE_CURRENT_CELL,
+    idx,
+		key,
+		data,
+		cellType
   }
+}
+
+export function moveToCell(cellI, rowI, direction) {
+
 }
 
 export function formulaColumn(arrMeth, func, colData){
@@ -150,5 +157,17 @@ export function setHistoryTable(index) {
 export function clearFilteredRows() {
 	return {
 		type: types.CLEAR_FILTERED_ROWS
+	}
+}
+
+export function closeMap() {
+	return {
+		type: types.CLOSE_MAP
+	}
+}
+
+export function showMap() {
+	return {
+		type: types.SHOW_MAP
 	}
 }

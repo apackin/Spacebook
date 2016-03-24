@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { updateCell, showRowModal, currentCell } from 'actions/sheet';
+import { updateCell, showRowModal, changeCurrentCell, moveToCell } from 'actions/sheet';
 import styles from 'css/components/table';
 import { Modal, Glyphicon } from 'react-bootstrap';
 import { searching } from 'actions/SpaceControls'
@@ -63,7 +63,12 @@ class Cell extends Component {
 	}
 
 	handleCell() {
-		this.props.dispatch(currentCell(this.props));
+		this.props.dispatch(changeCurrentCell(
+			this.props.rowIdx,
+			this.props.cellKey,
+			this.props.cell.data,
+			this.props.cell.type
+		));
 		// this.props.searching ? this.props.dispatch(searching(false)) : null;
 	}
 
@@ -77,7 +82,8 @@ class Cell extends Component {
               break;}
       case 38:{
 							evt.preventDefault();
-              this.handleFocus(""+col+(row-1));
+              // this.handleFocus(""+col+(row-1));
+							this.props.dispatch(moveToCell(col,row-1,'UP'))
               break;}
       case 39:{
 							evt.preventDefault();
@@ -97,7 +103,13 @@ class Cell extends Component {
     // if(document.getElementById(selId)) document.getElementById(selId).focus();
   }
 
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.cell.data !== this.props.cell.data ||
+			nextState.disabled !== this.state.disabled;
+	}
+
 	render () {
+		console.log('RENDERED!')
     const { cellKey, rowIdx, grid, cell, row } = this.props;
     // if (this.props.cellIdx === 0) {
     //     return (

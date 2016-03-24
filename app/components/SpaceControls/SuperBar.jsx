@@ -11,11 +11,13 @@ const cx = classNames.bind(styles);
 
 const SuperBar = (props) => {
   function funcToCall (evt) {
-    return props.updateCell(evt.target.value, props.cell.cellKey, props.cell.rowIdx)
+    return props.updateCell(evt.target.value, props.cell.key, props.cell.idx)
   }
 
   // Being used as search
-  if (props.searching && !props.cell) {
+
+  // REMOVED A CHECK TO SEE IF THERE IS PROPS.CELL
+  if (props.searching) {
     return (
       <input
         placeholder={'Search your sheet'}
@@ -25,19 +27,19 @@ const SuperBar = (props) => {
   }
 
   // If no cell or image then disabled and says Magic Bar
-  if (!props.cell || props.cell.cell.type === 'Images') return (
+  if (!props.cell || props.cell.cellType === 'Images') return (
       <input
         placeholder={'Magic Bar'}
         onChange={props.searchSheet}
         disabled
       />
   )
-
+  
   // standard when cell is selected is populates the magic bar and is linked with the cell
   return (
       <input
-        value={props.cell ? props.cell.cell.data : 'Magic Bar'}
-        placeholder={props.cell ? props.cell.cell.data : 'Magic Bar'}
+        value={props.cell ? props.cell.data : 'Magic Bar'}
+        placeholder={props.cell ? props.cell.data : 'Magic Bar'}
         onChange={funcToCall}
       />
   );

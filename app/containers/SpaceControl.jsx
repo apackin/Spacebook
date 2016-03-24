@@ -41,7 +41,7 @@ class SpaceControl extends Component {
   }
 
   toggleMagicBar() {
-    this.props.dispatch(SheetActions.currentCell())
+    this.props.dispatch(SheetActions.changeCurrentCell())
     if (!!this.props.searching) {
         this.props.dispatch(Actions.searching(false));
         this.props.dispatch(SheetActions.clearFilteredRows())

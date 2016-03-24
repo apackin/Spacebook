@@ -15,12 +15,13 @@ import {
   CLEAR_SHEET,
   SHOW_HISTORY_MODAL,
   CLOSE_HISTORY_MODAL,
-  CURRENT_CELL,
+  CHANGE_CURRENT_CELL,
   SET_HISTORY_TABLE,
   UPDATE_HISTORY,
   SEARCH_SHEET,
-  CLEAR_SEARCH_GRID,
-  CLEAR_FILTERED_ROWS
+  CLEAR_FILTERED_ROWS,
+  SHOW_MAP,
+  HIDE_MAP
 } from 'constants/index';
 
 export default function sheet(state = {
@@ -50,8 +51,13 @@ export default function sheet(state = {
         newState.grid[action.cell.idx][action.cell.key].data = action.cell.data
         return newState
       }
-    case CURRENT_CELL:
-      return Object.assign({}, state, {currentCell : action.cell})
+    case CHANGE_CURRENT_CELL:
+      return Object.assign({}, state, {currentCell : {
+        idx: action.idx,
+        key: action.key,
+        data: action.data,
+        type: action.cellType
+      }})
     case UPDATE_MODAL_CELL:
       {
         let modalRowState = _.cloneDeep(state);
@@ -233,6 +239,14 @@ export default function sheet(state = {
         addRowState.grid.push(newRow)
         return addRowState
       }
+    case SHOW_MAP:
+      let showMapState = _.cloneDeep(state);
+      showMapState.showMap = true;
+      return showMapState;
+    case HIDE_MAP:
+        let hideMapState = _.cloneDeep(state);
+        hideMapState.showMap = false;
+        return hideMapState;
     default:
       return state;
   }
