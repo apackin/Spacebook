@@ -139,3 +139,10 @@ export function rowDrag(panes) {
 		panes
 	}
 }
+
+export function colDrag(panes) {
+	return {
+		type: types.DRAG_TABLE_COL,
+		panes
+	}
+}

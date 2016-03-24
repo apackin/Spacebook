@@ -22,6 +22,7 @@ class SpaceControl extends Component {
     this.runUpdateCell = this.runUpdateCell.bind(this);
     this.clearMagicBar = this.clearMagicBar.bind(this);
     this.searchSheet = this.searchSheet.bind(this)
+    this.dragCol = this.dragCol.bind(this)
   }
 
   componentWillMount() {
@@ -41,6 +42,10 @@ class SpaceControl extends Component {
   clearMagicBar() {
     this.props.dispatch(SheetActions.currentCell())
     this.props.dispatch(Actions.searching())
+  }
+
+  dragCol(e) {
+    this.props.dispatch(SheetActions.colDrag(e))
   }
 
   searchSheet(e) {
@@ -72,6 +77,7 @@ class SpaceControl extends Component {
             <div className={cx('tableBox')}>
               <Table grid={this.props.searchGrid || this.props.sheet.grid}
                 headers={this.props.sheet.columnHeaders}
+                dragCol={this.dragCol}
               />
             </div>
           </div>
@@ -81,7 +87,6 @@ class SpaceControl extends Component {
     );
   }
 }
-
 
 
 function mapStateToProps(store) {

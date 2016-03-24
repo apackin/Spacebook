@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { updateCell, showRowModal, currentCell } from 'actions/sheet';
 import styles from 'css/components/table';
 import { Modal, Glyphicon } from 'react-bootstrap';
-import { searching } from 'actions/SpaceControls'
+import { searching } from 'actions/spacecontrols'
 import ContentEditable from 'react-contenteditable';
 
 

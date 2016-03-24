@@ -6,6 +6,7 @@ import styles from 'css/components/table';
 import { DropdownButton, Glyphicon, Dropdown } from 'react-bootstrap';
 import { MenuItem } from 'react-bootstrap';
 import MenuEditCol from './MenuEditCol';
+import { SortablePane, Pane } from 'react-sortable-pane';
 
 const cx = classNames.bind(styles);
 
@@ -99,10 +100,21 @@ class ColumnOptions extends Component {
 			viewing = (<MenuEditCol data={this.props.data} exitTypeMenu={this.exitTypeMenu}/>)
 		}
 
+		const paneStyle = {
+		  fontSize: "40px",
+		  textAlign:"center",
+		  paddingTop:"60px",
+		  height:"200px",
+		  border: "solid 1px #ccc",
+		  borderRadius: "5px",
+		  backgroundColor: "#fff"
+		};
+
 		return (
 			<div className={cx('thead')}>
 				{viewing}
 			</div>
+
 		);
 	}
 }

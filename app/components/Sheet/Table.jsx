@@ -15,11 +15,11 @@ export default class Table extends Component {
     if(!this.props.headers) return <div>Loading...</div>
     return (
       <div className={cx('table')}>
-        <Headers headers={this.props.headers} />
+        <Headers headers={this.props.headers} dragCol={this.props.dragCol}/>
         <Grid grid={this.props.grid} headers={this.props.headers} disableAll={this.props.disableAll}/>
         <AddRow />
         <RowModal className={cx('row-modal')}/>
-        
+
       </div>
     );
   }

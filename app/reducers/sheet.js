@@ -19,8 +19,8 @@ import {
   SET_HISTORY_TABLE,
   UPDATE_HISTORY,
   DRAG_TABLE_ROW,
+  DRAG_TABLE_COL,
   SEARCH_SHEET
-
 } from 'constants/index';
 
 export default function sheet(state = {
@@ -228,25 +228,50 @@ export default function sheet(state = {
       }
     case DRAG_TABLE_ROW:
     {
+      // let newState=_.cloneDeep(state);
+      //
+      // let newGrid=action.panes.sort((a,b)=> a - b ).map(el => {
+      //   console.log(el.id)
+      //   return newState.grid[el.id];
+      // });
+      // newState.grid=newGrid;
+      // return newState;
+      break;
+    }
+    case DRAG_TABLE_COL:
+    {
       let newState=_.cloneDeep(state);
 
-      let newGrid=action.panes.sort((a,b)=> a - b ).map(el => {
-        console.log(el.id)
-        return newState.grid[el.id];
-      });
-      newState.grid=newGrid;
+        let newOrd={};
+        action.panes.forEach((el,idx) => newOrd[idx+100]=el.id);
+        console.log(newOrd)
+
+
+        // newState.columnHeaders.forEach((el,idx) => { el.id=Number(newOrd[el.id]) })
+        // newState.columnHeaders=_.orderBy(newState.columnHeaders,['id'],['asc']);
+
+        var gridBackup=_.cloneDeep(newState.grid);
+        newState.grid.forEach((el,idx) => {
+          for (var key in newOrd) {
+            el[key]=Object.assign({},gridBackup[idx][newOrd[key]]);
+          }
+        })
+
+        console.log(newState.columnHeaders)
+
       return newState;
+
     }
     default:
       return state;
   }
 }
 
-function insertNewColInRows (state, newColumn){
+function insertNewColInRows (state, newColumn,data){
   state.grid.forEach(row => {
     row[newColumn.id] = {
       type: newColumn.type,
-      data: null,
+      data: data || null,
     }
   });
   return state;

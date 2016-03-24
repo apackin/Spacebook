@@ -52,8 +52,10 @@
 }
 
 .addColumn {
-  width: 50px;
+  width: 54px;
   display: inline-block;
+  position: relative;
+  float: right;
   background: #fff;
   /*border-right: 1px solid #dde1e3;
   border-bottom: 1px solid #d1d1d1;*/
