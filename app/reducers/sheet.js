@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {
+  UPDATE_FORMULA_CELL,
   UPDATE_CELL,
   SHOW_ROW_MODAL,
   CLOSE_ROW_MODAL,
@@ -23,6 +24,10 @@ import {
   SHOW_MAP,
   HIDE_MAP
 } from 'constants/index';
+import {
+  insertNewColInRows,
+  runCustomFunc
+} from './sheetHelpers.js';
 
 export default function sheet(state = {
   grid: [],
@@ -51,6 +56,7 @@ export default function sheet(state = {
         newState.grid[action.cell.idx][action.cell.key].data = action.cell.data
         return newState
       }
+
     case CHANGE_CURRENT_CELL:
       return Object.assign({}, state, {currentCell : {
         idx: action.idx,
@@ -58,6 +64,14 @@ export default function sheet(state = {
         data: action.data,
         type: action.cellType
       }})
+
+    case UPDATE_FORMULA_CELL:
+      {
+        let newState = _.cloneDeep(state);
+        let data = runCustomFunc(newState, action.row, action.formula);
+        newState.grid[action.cell.idx][action.cell.key].data = data;
+        return newState
+      }
     case UPDATE_MODAL_CELL:
       {
         let modalRowState = _.cloneDeep(state);
@@ -135,7 +149,10 @@ export default function sheet(state = {
 
         updateColumnState.grid = updateColumnState.grid.map(row=>{
           row[updatingId].type = action.data.type;
-          if(action.data.formula) row[updatingId].data = runCustomFunc(updateColumnState, row, action.data.formula)
+          if(action.data.formula) {
+            row[updatingId].data = runCustomFunc(updateColumnState, row, action.data.formula);
+            row[updatingId].formula = action.data.formula;
+          }
           return row;
         })
         return updateColumnState;
@@ -249,36 +266,5 @@ export default function sheet(state = {
         return hideMapState;
     default:
       return state;
-  }
-}
-
-function insertNewColInRows (state, newColumn){
-  state.grid.forEach(row => {
-    row[newColumn.id] = {
-      type: newColumn.type,
-      data: null,
-    }
-  });
-  return state;
-}
-
-function runCustomFunc (state, row, funcText) {
-  let columnDefs = 'let document = undefined, window = undefined, alert = undefined; ';
-
-  state.columnHeaders.forEach((elem, idx) => {
-    // TODO remove the column that we're adding to to prevent errors?
-    funcText = funcText.replace(elem.name, 'Col' + idx);
-    let userData = decorationType(row[elem.id]);
-    columnDefs += 'let Col' + idx + ' = ' + userData + '; ';
-    });
-
-  return eval(columnDefs+funcText);
-}
-
-function decorationType (cell) {
-  switch (cell.type) {
-    case 'Images': return '["' + cell.data.join('","') + '"]';
-    case 'Formula': case 'Link': case 'Text': return '"' + cell.data + '"';
-    default: return cell.data;
   }
 }
