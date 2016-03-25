@@ -35,6 +35,18 @@ export function updateCell(data, key, idx) {
   };
 }
 
+export function updateFormulaCell(key, idx, formula, row){
+	return {
+		type: types.UPDATE_FORMULA_CELL,
+		formula,
+		row,
+		cell: {
+			key,
+			idx,
+		}
+	};
+}
+
 export function showRowModal(rowIdx){
 	return {
 		 type: types.SHOW_ROW_MODAL,
@@ -102,20 +114,20 @@ export function insertColumn(colIdx){
 	}
 }
 
-export function formulaColumn(arrMeth, func, colId){
-	return {
-		type: types.FORMULA_COLUMN,
-		colId,
-		func,
-		arrMeth,
-	}
-}
-
 export function currentCell(cell) {
   return {
     type: types.CURRENT_CELL,
     cell
   }
+}
+
+export function formulaColumn(arrMeth, func, colData){
+	return {
+		type: types.FORMULA_COLUMN,
+		colData,
+		func,
+		arrMeth,
+	}
 }
 
 
@@ -133,6 +145,7 @@ export function setHistoryTable(index) {
 	}
 }
 
+<<<<<<< HEAD
 export function rowDrag(panes) {
 	return {
 		type: types.DRAG_TABLE_ROW,
@@ -144,5 +157,10 @@ export function colDrag(panes) {
 	return {
 		type: types.DRAG_TABLE_COL,
 		panes
+=======
+export function clearFilteredRows() {
+	return {
+		type: types.CLEAR_FILTERED_ROWS
+>>>>>>> master
 	}
 }

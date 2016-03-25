@@ -15,6 +15,7 @@ import styles from 'css/components/space-control';
 const cx = classNames.bind(styles);
 
 
+
 class SpaceControl extends Component {
   constructor(props, context) {
     super(props, context);
@@ -23,6 +24,8 @@ class SpaceControl extends Component {
     this.clearMagicBar = this.clearMagicBar.bind(this);
     this.searchSheet = this.searchSheet.bind(this)
     this.dragCol = this.dragCol.bind(this)
+    this.toggleMagicBar = this.toggleMagicBar.bind(this);
+
   }
 
   componentWillMount() {
@@ -33,15 +36,21 @@ class SpaceControl extends Component {
 
   componentWillUnmount(){
     this.props.dispatch(SheetActions.clearSheet())
+    this.props.dispatch(SheetActions.clearFilteredRows())
   }
 
   runUpdateCell(evt, cellKey, rowIdx) {
     this.props.dispatch(SheetActions.updateCell(evt, cellKey, rowIdx))
   }
 
-  clearMagicBar() {
+  toggleMagicBar() {
     this.props.dispatch(SheetActions.currentCell())
-    this.props.dispatch(Actions.searching())
+    if (!!this.props.searching) {
+        this.props.dispatch(Actions.searching(false));
+        this.props.dispatch(SheetActions.clearFilteredRows())
+      } else {
+        this.props.dispatch(Actions.searching())
+      }
   }
 
   dragCol(e) {
@@ -49,7 +58,6 @@ class SpaceControl extends Component {
   }
 
   searchSheet(e) {
-    // filters the rows for cells that match the current search criteria
     this.props.dispatch(SheetActions.searchSheet(e.target.value))
   }
 
@@ -66,7 +74,7 @@ class SpaceControl extends Component {
         <MagicBar
           cell={this.props.sheet.currentCell}
           updateCell={this.runUpdateCell}
-          clearMagicBar={this.clearMagicBar}
+          toggleMagicBar={this.toggleMagicBar}
           searchSheet={this.searchSheet}
           searching={this.props.searching}
         />
@@ -75,9 +83,12 @@ class SpaceControl extends Component {
         <div className={cx('masterControl')}>
           <div className={cx('scrollControl')}>
             <div className={cx('tableBox')}>
-              <Table grid={this.props.searchGrid || this.props.sheet.grid}
+              <Table
+                grid={this.props.sheet.grid}
                 headers={this.props.sheet.columnHeaders}
                 dragCol={this.dragCol}
+                searching={this.props.searching}
+                filteredRows={this.props.filteredRows}
               />
             </div>
           </div>
@@ -95,7 +106,7 @@ function mapStateToProps(store) {
     sheet: store.sheet,
     sheetNames: store.spacecontrol.sheetNames,
     searching: store.spacecontrol.searching,
-    searchGrid: store.sheet.searchGrid
+    filteredRows: store.sheet.filteredRows
   };
 }
 

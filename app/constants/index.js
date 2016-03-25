@@ -24,6 +24,7 @@ export const SEARCH_SHEET = 'SEARCH_SHEET';
 
 
 // SHEET CONSTS
+export const UPDATE_FORMULA_CELL = 'UPDATE_FORMULA_CELL';
 export const UPDATE_CELL = 'UPDATE_CELL';
 export const SHOW_ROW_MODAL = 'SHOW_ROW_MODAL';
 export const CLOSE_ROW_MODAL = 'CLOSE_ROW_MODAL';
@@ -44,6 +45,12 @@ export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const CURRENT_CELL = 'CURRENT_CELL';
 export const DRAG_TABLE_ROW = 'DRAG_TABLE_ROW';
 export const DRAG_TABLE_COL = 'DRAG_TABLE_COL';
+export const CLEAR_SEARCH_GRID = 'CLEAR_SEARCH_GRID';
+export const CLEAR_FILTERED_ROWS = 'CLEAR_FILTERED_ROWS';
+
+// FormulaStore Constants
+export const FORMULA_UPLOAD = 'FORMULA_UPLOAD';
+export const FORMULA_FETCH = 'FORMULA_FETCH';
 
 // NAV CONSTS
 export const CHANGE_SPACE_NAME = 'CHANGE_SPACE_NAME';

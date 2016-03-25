@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {
+  UPDATE_FORMULA_CELL,
   UPDATE_CELL,
   SHOW_ROW_MODAL,
   CLOSE_ROW_MODAL,
@@ -20,8 +21,14 @@ import {
   UPDATE_HISTORY,
   DRAG_TABLE_ROW,
   DRAG_TABLE_COL,
-  SEARCH_SHEET
+  SEARCH_SHEET,
+  CLEAR_SEARCH_GRID,
+  CLEAR_FILTERED_ROWS
 } from 'constants/index';
+import {
+  insertNewColInRows,
+  runCustomFunc
+} from './sheetHelpers.js';
 
 export default function sheet(state = {
   grid: [],
@@ -48,6 +55,13 @@ export default function sheet(state = {
       {
         let newState = _.cloneDeep(state);
         newState.grid[action.cell.idx][action.cell.key].data = action.cell.data
+        return newState
+      }
+    case UPDATE_FORMULA_CELL:
+      {
+        let newState = _.cloneDeep(state);
+        let data = runCustomFunc(newState, action.row, action.formula);
+        newState.grid[action.cell.idx][action.cell.key].data = data;
         return newState
       }
     case CURRENT_CELL:
@@ -110,11 +124,11 @@ export default function sheet(state = {
       let addColumnState =  _.cloneDeep(state);
       let newColumn = {
         id: (100+addColumnState.columnHeaders.length).toString(),
-        type: 'Text',
         name: 'Column ' + (1+addColumnState.columnHeaders.length),
         idx: addColumnState.columnHeaders.length,
       }
 
+      // TODO need to set this.props.view: 'editNameAndType';
       addColumnState.columnHeaders.push(newColumn);
       addColumnState = insertNewColInRows(addColumnState, newColumn);
       return addColumnState;}
@@ -129,7 +143,10 @@ export default function sheet(state = {
 
         updateColumnState.grid = updateColumnState.grid.map(row=>{
           row[updatingId].type = action.data.type;
-          if(action.data.formula) row[updatingId].data = runCustomFunc(updateColumnState, row, action.data.formula)
+          if(action.data.formula) {
+            row[updatingId].data = runCustomFunc(updateColumnState, row, action.data.formula);
+            row[updatingId].formula = action.data.formula;
+          }
           return row;
         })
         return updateColumnState;
@@ -138,7 +155,6 @@ export default function sheet(state = {
       let insertColumnState = _.cloneDeep(state);
       let newColumn = {
         id: (100+insertColumnState.columnHeaders.length).toString(),
-        type: 'Text',
         name: 'Column ' + (1+action.colIdx),
         idx: action.colIdx,
       }
@@ -148,6 +164,7 @@ export default function sheet(state = {
         return column;
       })
 
+      // TODO need to set this.props.view: 'editNameAndType';
       insertColumnState.columnHeaders.splice(action.colIdx, 0, newColumn);
 
       insertColumnState = insertNewColInRows(insertColumnState, newColumn);
@@ -167,16 +184,22 @@ export default function sheet(state = {
       return sortColumnState;}
     case SEARCH_SHEET:
       let searchState = _.cloneDeep(state);
-      searchState.searchGrid = searchState.grid.filter((row, idx) => {
+      // approach to hide the rows that don't meet search criteria
+      searchState.filteredRows = searchState.grid.reduce((accum, row, idx) => {
         let toSave;
         for(let cell in row) {
-          if (row[cell].data) {
-            row[cell].data.indexOf(action.term) > -1 ? toSave = true : null;
+          if (row[cell].data && typeof row[cell].data === 'string') {
+            row[cell].data.toLowerCase().indexOf(action.term.toLowerCase()) > -1 ? toSave = true : null;
           }
         }
-        return toSave
-      })
+        if (!toSave) accum.push(idx);
+        return accum;
+      }, [])
       return searchState;
+    case CLEAR_FILTERED_ROWS:
+      let clearedFilteredState = _.cloneDeep(state);
+      clearedFilteredState.filteredRows = [];
+      return clearedFilteredState;
     case REMOVE_COLUMN:{
       let removeColumnState = _.cloneDeep(state);
       let colId = action.colId;
@@ -194,17 +217,18 @@ export default function sheet(state = {
     case FORMULA_COLUMN:{
       let formulaColumnState = _.cloneDeep(state);
 
-      let newColumn = {
-        id: (100+formulaColumnState.columnHeaders.length).toString(),
-        name: 'Column ' + (1+formulaColumnState.columnHeaders.length),
-        idx: formulaColumnState.columnHeaders.length,
-      }
+      let newColumn = Object.assign({}, action.colData);
+      newColumn.id = (100+formulaColumnState.columnHeaders.length).toString();
+      newColumn.name = 'Column ' + (1+formulaColumnState.columnHeaders.length);
+      newColumn.idx = formulaColumnState.columnHeaders.length;
 
-      // console.log('ARRAY METHOD', action.arrMeth);
+      // action.arrMeth usually = 'map' or 'reduce';
       formulaColumnState.grid = formulaColumnState.grid[action.arrMeth]((row) =>{
-        console.log(row, action.colId);
-        let newData = action.func(row[action.colId].data);
-        if (!newColumn.type) newColumn.type = 'Text'; // this should corralate to the Typeof newData
+        let newData = action.func(row[action.colData.id].data);
+
+        // TODO should this corralate to the type of the new cell?
+        // if (!newColumn.type) newColumn.type = 'Text';
+
         row[newColumn.id] = {
           data: newData,
           type: newColumn.type,

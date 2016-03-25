@@ -111,6 +111,11 @@
 }
 
 
+.trowHidden {
+    width: 100%;
+    display: none;
+    height: 34px;
+}
 
 .cell {
     width: 200px;
