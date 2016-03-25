@@ -10,10 +10,10 @@ import styles from 'css/components/magic-bar';
 const cx = classNames.bind(styles);
 
 const SuperBar = (props) => {
-  console.log(props);
   function funcToCall (evt) {
     props.updateCell(evt.target.value, props.cell.key, props.cell.idx)
-    props.changeCurrentCell(props.cell.idx, props.cell.key, props.cell.data, props.cell.type);
+    console.log(props.cell);
+    props.changeCurrentCell(props.cell.idx, props.cell.key,evt.target.value, props.cell.type);
   }
 
   // Being used as search

@@ -51,8 +51,8 @@ class SpaceControl extends Component {
       }
   }
 
-  changeCurrentCell() {
-    this.props.dispatch(SheetActions.changeCurrentCell());
+  changeCurrentCell(idx, key, value, type) {
+    this.props.dispatch(SheetActions.changeCurrentCell(idx, key, value, type));
   }
 
   searchSheet(e) {
