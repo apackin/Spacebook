@@ -242,20 +242,21 @@ export default function sheet(state = {
     {
       let newState=_.cloneDeep(state);
 
-        let newOrd={};
-        action.panes.forEach((el,idx) => newOrd[idx+100]=el.id);
-        console.log(newOrd)
 
 
-        // newState.columnHeaders.forEach((el,idx) => { el.id=Number(newOrd[el.id]) })
-        // newState.columnHeaders=_.orderBy(newState.columnHeaders,['id'],['asc']);
 
-        var gridBackup=_.cloneDeep(newState.grid);
-        newState.grid.forEach((el,idx) => {
-          for (var key in newOrd) {
-            el[key]=Object.assign({},gridBackup[idx][newOrd[key]]);
-          }
-        })
+        let genNew=_.once(reorderCols);
+
+        // console.log(newOrd)
+
+        newState.columnHeaders=genNew(action.panes,state);
+
+        // var gridBackup=_.cloneDeep(newState.grid);
+        // newState.grid.forEach((el,idx) => {
+        //   for (var key in newOrd) {
+        //     el[key]=Object.assign({},gridBackup[idx][newOrd[key]]);
+        //   }
+        // })
 
         console.log(newState.columnHeaders)
 
@@ -266,6 +267,29 @@ export default function sheet(state = {
       return state;
   }
 }
+
+function reorderCols(panes,state) {
+
+  var newOrd=[];
+  panes.forEach((el,idx) => {
+    newOrd.push({ prev: Number(idx+100),
+      curr: Number(el.id)
+    });
+  });
+    var newColHds=_.cloneDeep(state.columnHeaders);
+    var headsCopy=_.cloneDeep(state.columnHeaders);
+    newOrd.forEach(el => {
+      headsCopy.forEach((cel,idx) => {
+        if (cel.id == el.prev) {
+          newColHds[idx].id=el.curr;
+          newColHds[idx].idx=el.curr-100;
+        }
+      })
+    })
+    newColHds=_.orderBy(newColHds,['id'],['asc']);
+    return newColHds;
+
+  }
 
 function insertNewColInRows (state, newColumn,data){
   state.grid.forEach(row => {

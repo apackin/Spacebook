@@ -44,7 +44,7 @@ const Headers = (props) => {
              margin={0}
              onResize={(id, dir, size, rect) => null}
              onOrderChange={(oldPanes,newPanes) => {
-               let bounced=_.debounce(() => props.dragCol(newPanes),300);
+               let bounced=_.debounce(() => props.dragCol(newPanes),500);
                bounced();
              }}
              >
