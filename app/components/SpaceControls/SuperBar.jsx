@@ -28,7 +28,7 @@ const SuperBar = (props) => {
   }
 
   // If no cell or image then disabled and says Magic Bar
-  if (!props.cell || props.cell.cellType === 'Images') return (
+  if (!props.cell || props.cell.cellType  === 'Images' || props.cell.cellType  === 'Reference') return (
       <input
         placeholder={'Magic Bar'}
         onChange={props.searchSheet}

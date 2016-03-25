@@ -8,6 +8,7 @@ import * as SheetActions from '../actions/sheet';
 import Navigation from 'containers/Navigation';
 import BottomBar from 'components/BottomBar';
 import ShareModal from 'components/SpaceControls/ShareModal';
+import Lookup from 'components/Sheet/Lookup';
 import classNames from 'classnames/bind';
 import styles from 'css/components/space-control';
 
@@ -78,6 +79,7 @@ class SpaceControl extends Component {
           changeCurrentCell={this.changeCurrentCell}
         />
         <ShareModal />
+        <Lookup />
       </div>
         <div className={cx('masterControl')}>
           <div className={cx('scrollControl')}>
