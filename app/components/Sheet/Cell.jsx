@@ -26,6 +26,7 @@ class Cell extends Component {
     this.keyPress = this.keyPress.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
 		this.isCurrentCell = this.isCurrentCell.bind(this);
+		this.shouldCellBeDisabled = this.shouldCellBeDisabled.bind(this);
 	}
 
 	handleChange(evt){
@@ -45,6 +46,12 @@ class Cell extends Component {
     this.setState({disabled: false});
   }
 
+	shouldCellBeDisabled() {
+		// if (this.isCurrentCell()) return false;
+		if (this.state.disabled || this.props.disableAll) return true;
+		return false;
+	}
+
   cell(cell, cellKey, row, rowIdx, cellIdx){
     if (cell.type === 'Images' ) {
       cell.data = cell.data || [];
@@ -55,7 +62,7 @@ class Cell extends Component {
       return (<ContentEditable
 				className={cx('cellContent')}
         html={cell.data} // innerHTML of the editable div
-        disabled={this.state.disabled || this.props.disableAll}       // use true to disable edition
+        disabled={this.shouldCellBeDisabled()}       // use true to disable edition
         onChange={this.handleChange} // handle innerHTML change
         onDoubleClick={this.editable} // allow for cell editing after focus
         onMouseEnter={this.setMouseEnter} // handle innerHTML change
@@ -88,8 +95,11 @@ class Cell extends Component {
 	}
 
   keyPress (evt) {
-    let col = Number(evt.target.id.substr(0,3));
-    let row = Number(evt.target.id.substr(3));
+		const col=Number(this.props.currentCell.cellKey);
+		const row=Number(this.props.currentCell.rowIdx);
+		console.log(col, row);
+    // let col = Number(evt.target.id.substr(0,3));
+    // let row = Number(evt.target.id.substr(3));
     switch (evt.keyCode) {
       case 37:{
 							evt.preventDefault();
@@ -120,8 +130,8 @@ class Cell extends Component {
     }
   }
 
-  handleFocus (selId) {
-    if(document.getElementById(selId)) document.getElementById(selId).focus();
+  handleFocus (cellId) {
+    // if(document.getElementById(cellId)) document.getElementById(cellId).children[0].focus();
   }
 
 	isCurrentCell() {
@@ -134,7 +144,6 @@ class Cell extends Component {
 		}
 	}
 
-	// TODO need to change the render to see if it is the current cell or not now
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextProps.cell.data !== this.props.cell.data ||
 			nextState.disabled !== this.state.disabled ||
@@ -145,7 +154,6 @@ class Cell extends Component {
 	}
 
 	render () {
-		console.log(this.props.currentCell)
 		console.log('CELL RENDERED')
     const { cellKey, rowIdx, grid, cell, row } = this.props;
     // if (this.props.cellIdx === 0) {

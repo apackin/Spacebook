@@ -126,7 +126,7 @@
 }
 
 .selectedCell {
-  background: primary-color;
+  background: light-primary-color;
   width: 200px;
   max-height: 40px;
   padding: 0px;
