@@ -125,6 +125,19 @@
     overflow: hidden;
 }
 
+.selectedCell {
+  background: primary-color;
+  width: 200px;
+  max-height: 40px;
+  padding: 0px;
+  display: inline-block;
+  border-bottom: 1px solid #dde1e3;
+  border-left: 1px solid transparent;
+  border-right: 1px solid #dde1e3;
+  border-top: 1px solid transparent;
+  overflow: hidden;
+}
+
 .cellContent:focus {
   background-color: light-primary-color;
 }

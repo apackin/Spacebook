@@ -29,6 +29,7 @@ const Grid = (props) => {
         row={row}
         rowIdx={idx}
         cellIdx={head.idx}
+        currentCell={props.currentCell}
         disableAll={props.disableAll}
         searching={props.searching}
       /> );

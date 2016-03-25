@@ -125,7 +125,7 @@ export function changeCurrentCell(idx, key, data, cellType) {
 }
 
 export function moveToCell(colI, rowI, grid) {
-	console.log(grid[rowI][colI])
+	// while(!grid[rowI][colI]) colI++;
 	return changeCurrentCell(rowI, colI.toString(), grid[rowI][colI].data, grid[rowI][colI].type)
 }
 

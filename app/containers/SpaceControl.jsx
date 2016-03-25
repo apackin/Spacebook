@@ -87,6 +87,7 @@ class SpaceControl extends Component {
                 headers={this.props.sheet.columnHeaders}
                 searching={this.props.searching}
                 filteredRows={this.props.filteredRows}
+                currentCell={this.props.sheet.currentCell}
               />
             </div>
           </div>

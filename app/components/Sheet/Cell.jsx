@@ -25,6 +25,7 @@ class Cell extends Component {
     this.editable = this.editable.bind(this);
     this.keyPress = this.keyPress.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
+		this.isCurrentCell = this.isCurrentCell.bind(this);
 	}
 
 	handleChange(evt){
@@ -82,13 +83,11 @@ class Cell extends Component {
 		// TODO want to dynamically select the inner element in this function which is called on focus
 		// will allow editing the element
 		// this.refs.content.getDOMNodefocus();
-		ReactDOM.findDOMNode(this.refs.content).focus();
+		// ReactDOM.findDOMNode(this.refs.content).focus();
 		// console.log(this.refs.content.getDOMNode)
 	}
 
   keyPress (evt) {
-		console.log(evt.target.id)
-		console.log('ref', this.refs)
     let col = Number(evt.target.id.substr(0,3));
     let row = Number(evt.target.id.substr(3));
     switch (evt.keyCode) {
@@ -100,7 +99,7 @@ class Cell extends Component {
       case 38:{
 							evt.preventDefault();
 							this.props.dispatch(moveToCell(col,row-1,this.props.grid));
-							const location = col.toString().concat((row-1).toString());
+							// const location = col.toString().concat((row-1).toString());
 							// console.log('locl', location);
 							// console.log(ReactDOM.findDOMNode(this.refs[location]));
 							this.handleFocus(""+col+(row-1));
@@ -125,14 +124,29 @@ class Cell extends Component {
     if(document.getElementById(selId)) document.getElementById(selId).focus();
   }
 
+	isCurrentCell() {
+		if(this.props.currentCell) {
+			if(this.props.currentCell.idx === this.props.rowIdx && this.props.currentCell.key === this.props.cellKey) {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	// TODO need to change the render to see if it is the current cell or not now
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextProps.cell.data !== this.props.cell.data ||
-			nextState.disabled !== this.state.disabled;
+			nextState.disabled !== this.state.disabled ||
+			this.props.currentCell.idx == this.props.rowIdx  &&
+				this.props.currentCell.key == this.props.cellKey ||
+			nextProps.currentCell.idx == nextProps.rowIdx  &&
+				nextProps.currentCell.key == nextProps.cellKey;
 	}
 
 	render () {
-		console.log('RENDERED!')
-		console.log(this.props)
+		console.log(this.props.currentCell)
+		console.log('CELL RENDERED')
     const { cellKey, rowIdx, grid, cell, row } = this.props;
     // if (this.props.cellIdx === 0) {
     //     return (
@@ -160,6 +174,7 @@ class Cell extends Component {
         onDoubleClick={this.editable} // allow for cell editing after focus
 				onFocus={this.handleCell}
 				onKeyDown={this.keyPress} // for key navigation
+				className={this.isCurrentCell() ? cx('selectedCell') : cx('cell')} // for key navigation
         >
         {this.cell(cell,cellKey,row,rowIdx)}
       </div>
