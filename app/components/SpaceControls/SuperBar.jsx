@@ -12,7 +12,6 @@ const cx = classNames.bind(styles);
 const SuperBar = (props) => {
   function funcToCall (evt) {
     props.updateCell(evt.target.value, props.cell.key, props.cell.idx)
-    console.log(props.cell);
     props.changeCurrentCell(props.cell.idx, props.cell.key,evt.target.value, props.cell.type);
   }
 

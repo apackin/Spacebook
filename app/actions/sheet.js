@@ -124,8 +124,9 @@ export function changeCurrentCell(idx, key, data, cellType) {
   }
 }
 
-export function moveToCell(cellI, rowI, direction) {
-
+export function moveToCell(colI, rowI, grid) {
+	console.log(grid[rowI][colI])
+	return changeCurrentCell(rowI, colI.toString(), grid[rowI][colI].data, grid[rowI][colI].type)
 }
 
 export function formulaColumn(arrMeth, func, colData){

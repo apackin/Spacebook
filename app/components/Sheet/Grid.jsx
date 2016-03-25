@@ -24,6 +24,7 @@ const Grid = (props) => {
       return (<Cell
         cell={row[head.id]}
         key={head.id}
+        grid={props.grid}
         cellKey={head.id}
         row={row}
         rowIdx={idx}
