@@ -31,6 +31,8 @@ class Cell extends Component {
 	}
 
 	handleChange(evt){
+		console.log(evt);
+		console.log(evt.target);
 	  const { dispatch, cellKey, rowIdx, row } = this.props;
 
     row[cellKey].data = dispatch(updateCell(evt.target.value, cellKey, rowIdx)).cell.data;
@@ -49,7 +51,7 @@ class Cell extends Component {
 
   editable (evt) {
     this.setState({disabled: false});
-		this.handleChange(evt);
+		// this.handleChange(evt);
   }
 
 	shouldCellBeDisabled() {
@@ -124,8 +126,6 @@ class Cell extends Component {
       case 38:{
 							evt.preventDefault();
 							this.props.dispatch(moveToCell(col,row-1,this.props.grid));
-							// const location = col.toString().concat((row-1).toString());
-							// console.log('locl', location);
 							// console.log(ReactDOM.findDOMNode(this.refs[location]));
 							this.handleFocus(""+col+(row-1));
               break;}
@@ -146,7 +146,7 @@ class Cell extends Component {
   }
 
   handleFocus (cellId) {
-    // if(document.getElementById(cellId)) document.getElementById(cellId).children[0].focus();
+    if(document.getElementById(cellId)) document.getElementById(cellId).firstChild.focus();
   }
 
 	isCurrentCell() {

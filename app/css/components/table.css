@@ -114,7 +114,7 @@
     height: 34px;
 }
 
-.cell {
+.cell, .cell:focus {
     width: 200px;
     max-height: 40px;
     padding: 0px;
@@ -124,6 +124,7 @@
     border-right: 1px solid #dde1e3;
     border-top: 1px solid transparent;
     overflow: hidden;
+    outline: none;
 }
 
 .selectedCell {
@@ -159,10 +160,10 @@
   display: none;
 }
 
-.cell:focus {
+/*.cell:focus {
     z-index: 100;
     width: 200px;
-}
+}*/
 
 .first-cell {
     width: 160px;
