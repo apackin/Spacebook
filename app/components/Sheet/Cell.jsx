@@ -110,8 +110,8 @@ class Cell extends Component {
 	}
 
   keyPress (evt) {
-		const col=Number(this.props.currentCell.cellKey);
-		const row=Number(this.props.currentCell.rowIdx);
+		const col=Number(this.props.currentCell.key);
+		const row=Number(this.props.currentCell.idx);
 		console.log(col, row);
     // let col = Number(evt.target.id.substr(0,3));
     // let row = Number(evt.target.id.substr(3));
