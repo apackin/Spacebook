@@ -145,7 +145,6 @@ export function setHistoryTable(index) {
 	}
 }
 
-<<<<<<< HEAD
 export function rowDrag(panes) {
 	return {
 		type: types.DRAG_TABLE_ROW,
@@ -157,10 +156,11 @@ export function colDrag(panes) {
 	return {
 		type: types.DRAG_TABLE_COL,
 		panes
-=======
+	}
+}
+
 export function clearFilteredRows() {
 	return {
 		type: types.CLEAR_FILTERED_ROWS
->>>>>>> master
 	}
 }

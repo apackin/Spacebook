@@ -269,11 +269,10 @@ export default function sheet(state = {
 
 
 
-        let genNew=_.once(reorderCols);
+        // let genNew=_.once(reorderCols);
 
-        // console.log(newOrd)
 
-        newState.columnHeaders=genNew(action.panes,state);
+        // newState.columnHeaders=genNew(action.panes,state);
 
         // var gridBackup=_.cloneDeep(newState.grid);
         // newState.grid.forEach((el,idx) => {
@@ -314,34 +313,3 @@ function reorderCols(panes,state) {
     return newColHds;
 
   }
-
-function insertNewColInRows (state, newColumn,data){
-  state.grid.forEach(row => {
-    row[newColumn.id] = {
-      type: newColumn.type,
-      data: data || null,
-    }
-  });
-  return state;
-}
-
-function runCustomFunc (state, row, funcText) {
-  let columnDefs = 'let document = undefined; let window = undefined; ';
-
-  state.columnHeaders.forEach((elem, idx) => {
-    // TODO remove this column?
-    funcText = funcText.replace(elem.name, 'userCol' + idx);
-    let userData = decorationType(row[elem.id].data);
-    console.log(userData);
-    columnDefs += 'let userCol' + idx + ' = ' + userData + '; ';
-    });
-
-
-  return eval(columnDefs+funcText);
-}
-
-function decorationType (type) {
-  if (Array.isArray(type)) return '["' + type.join('","') + '"]';
-  else if (typeof type === 'string') return '"' + type + '"';
-  else return type;
-}

@@ -26,7 +26,7 @@ class HistoryButton extends Component {
 	    </div>
 	  );
  	}
-};
+}
 
 function mapStateToProps(store) {
 	return {
@@ -35,4 +35,3 @@ function mapStateToProps(store) {
 }
 
 export default connect(mapStateToProps)(HistoryButton);
-

@@ -10,25 +10,13 @@ const cx = classNames.bind(styles);
 
 class Grid extends Component {
 
-<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.generateRows=this.generateRows.bind(this);
     this.generateCells=this.generateCells.bind(this);
   }
 
-  generateRows(grid) {
-    return grid.map( (row, idx) => {
-      return (
-            <div className={cx('trow')} key={idx} >
-              <div className={cx('rnum')}>{idx + 1}</div>
-              {this.props.disableAll ? <div className={cx('rnum')}></div> : <RowOpener className={cx('rnum')} row={idx}/>}
-              {this.generateCells(row, idx)}
-            </div>
-        );
-    });
-=======
-  function generateRows(grid, filtered) {
+  generateRows(grid, filtered) {
     return grid.map( (row, idx) => {
         return (
           <div className={filtered.indexOf(idx) === -1 ? cx('trow') : cx('trowHidden')} key={idx}>
@@ -37,7 +25,6 @@ class Grid extends Component {
             {generateCells(row, idx)}
           </div>);
         });
->>>>>>> master
   }
 
   generateCells (row, idx) {
@@ -49,12 +36,9 @@ class Grid extends Component {
         row={row}
         rowIdx={idx}
         cellIdx={head.idx}
-<<<<<<< HEAD
         disableAll={this.props.disableAll}
-=======
-        disableAll={props.disableAll}
-        searching={props.searching}
->>>>>>> master
+        searching={this.props.searching}
+
       /> );
     });
   }
@@ -62,13 +46,9 @@ class Grid extends Component {
 render() {
 
   return (
-<<<<<<< HEAD
-    <div className={cx('trows')} >
-      {this.generateRows(this.props.grid)}
-=======
+
     <div className={cx('trows')}>
-      {generateRows(props.grid ? props.grid : [], props.filteredRows ? props.filteredRows : [])}
->>>>>>> master
+      {generateRows(this.props.grid ? this.props.grid : [], this.props.filteredRows ? this.props.filteredRows : [])}
     </div>
   );
 }
