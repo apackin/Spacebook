@@ -10,8 +10,10 @@ import styles from 'css/components/magic-bar';
 const cx = classNames.bind(styles);
 
 const SuperBar = (props) => {
+  console.log(props);
   function funcToCall (evt) {
-    return props.updateCell(evt.target.value, props.cell.key, props.cell.idx)
+    props.updateCell(evt.target.value, props.cell.key, props.cell.idx)
+    props.changeCurrentCell(props.cell.idx, props.cell.key, props.cell.data, props.cell.type);
   }
 
   // Being used as search
@@ -34,7 +36,7 @@ const SuperBar = (props) => {
         disabled
       />
   )
-  
+
   // standard when cell is selected is populates the magic bar and is linked with the cell
   return (
       <input

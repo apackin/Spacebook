@@ -30,9 +30,11 @@ class Cell extends Component {
 	  const { dispatch, cellKey, rowIdx, row } = this.props;
 
     row[cellKey].data = dispatch(updateCell(evt.target.value, cellKey, rowIdx)).cell.data;
+		this.handleCell();
 
     for (let cell in row) {
       if (row[cell].type === 'Formula') {
+				console.log(row[cell]);
         dispatch(updateFormulaCell(cell, rowIdx, row[cell].formula, row));
       }
     }
