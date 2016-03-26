@@ -14,17 +14,14 @@ import styles from 'css/components/space-control';
 
 const cx = classNames.bind(styles);
 
-
-
 class SpaceControl extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {searching: false};
     this.runUpdateCell = this.runUpdateCell.bind(this);
-    this.clearMagicBar = this.clearMagicBar.bind(this);
-    this.searchSheet = this.searchSheet.bind(this)
     this.dragCol = this.dragCol.bind(this)
     this.toggleMagicBar = this.toggleMagicBar.bind(this);
+    this.resizeCol=this.resizeCol.bind(this);
 
   }
 
@@ -55,6 +52,10 @@ class SpaceControl extends Component {
 
   dragCol(e) {
     this.props.dispatch(SheetActions.colDrag(e))
+  }
+
+  resizeCol(e) {
+    this.props.dispatch(SheetActions.resizeCol(e))
   }
 
   searchSheet(e) {
@@ -89,6 +90,7 @@ class SpaceControl extends Component {
                 dragCol={this.dragCol}
                 searching={this.props.searching}
                 filteredRows={this.props.filteredRows}
+                resizeCol={this.resizeCol}
               />
             </div>
           </div>

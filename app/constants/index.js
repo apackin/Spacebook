@@ -47,6 +47,7 @@ export const DRAG_TABLE_ROW = 'DRAG_TABLE_ROW';
 export const DRAG_TABLE_COL = 'DRAG_TABLE_COL';
 export const CLEAR_SEARCH_GRID = 'CLEAR_SEARCH_GRID';
 export const CLEAR_FILTERED_ROWS = 'CLEAR_FILTERED_ROWS';
+export const RESIZE_COL = 'RESIZE_COL';
 
 // FormulaStore Constants
 export const FORMULA_UPLOAD = 'FORMULA_UPLOAD';

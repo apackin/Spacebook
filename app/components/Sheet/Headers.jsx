@@ -12,6 +12,7 @@ function generateColumnOptions (headers) {
   return headers.map((header, key) => {
       return (
         <Pane
+          className={cx('thead')}
           id={header.id}
           key={key}
           width={200}
@@ -22,18 +23,19 @@ function generateColumnOptions (headers) {
   })
 }
 
-const paneStyle = {
-  fontSize: "40px",
-  textAlign:"center",
-  paddingTop:"60px",
-  height:"200px",
-  border: "solid 1px #ccc",
-  borderRadius: "5px",
-  backgroundColor: "#fff"
-};
+// const paneStyle = {
+//   fontSize: "40px",
+//   textAlign:"center",
+//   paddingTop:"60px",
+//   height:"200px",
+//   border: "solid 1px #ccc",
+//   borderRadius: "5px",
+//   backgroundColor: "#fff"
+// };
 
 
 const Headers = (props) => {
+
   return (
     <div className={cx('theaders')}>
       <AddColumn />
@@ -42,7 +44,8 @@ const Headers = (props) => {
           <SortablePane
              direction="horizontal"
              margin={0}
-             onResize={(id, dir, size, rect) => null}
+             disableEffect={true}
+             onResizeStop={(id, dir, size, rect) => props.resizeCol(id)}
              onOrderChange={(oldPanes,newPanes) => {
                let bounced=_.debounce(() => props.dragCol(newPanes),500);
                bounced();

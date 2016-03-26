@@ -164,3 +164,10 @@ export function clearFilteredRows() {
 		type: types.CLEAR_FILTERED_ROWS
 	}
 }
+
+export function resizeCol(size) {
+	return {
+		type: types.RESIZE_COL,
+		size
+	}
+}

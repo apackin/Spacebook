@@ -21,8 +21,8 @@ class Grid extends Component {
         return (
           <div className={filtered.indexOf(idx) === -1 ? cx('trow') : cx('trowHidden')} key={idx}>
             <div className={cx('rnum')}>{idx + 1}</div>
-            {props.disableAll ? <div className={cx('rnum')}></div> : <RowOpener className={cx('rnum')} row={idx}/>}
-            {generateCells(row, idx)}
+            {this.props.disableAll ? <div className={cx('rnum')}></div> : <RowOpener className={cx('rnum')} row={idx}/>}
+            {this.generateCells(row, idx)}
           </div>);
         });
   }
@@ -48,7 +48,7 @@ render() {
   return (
 
     <div className={cx('trows')}>
-      {generateRows(this.props.grid ? this.props.grid : [], this.props.filteredRows ? this.props.filteredRows : [])}
+      {this.generateRows(this.props.grid ? this.props.grid : [], this.props.filteredRows ? this.props.filteredRows : [])}
     </div>
   );
 }

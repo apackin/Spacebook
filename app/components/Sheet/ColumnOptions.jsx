@@ -98,16 +98,6 @@ class ColumnOptions extends Component {
 			viewing = (<MenuEditCol data={this.props.data} exitTypeMenu={this.exitTypeMenu}/>)
 		}
 
-		const paneStyle = {
-		  fontSize: "40px",
-		  textAlign:"center",
-		  paddingTop:"60px",
-		  height:"200px",
-		  border: "solid 1px #ccc",
-		  borderRadius: "5px",
-		  backgroundColor: "#fff"
-		};
-
 		return (
 			<div className={cx('thead')}>
 				{viewing}

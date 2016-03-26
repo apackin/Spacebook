@@ -15,7 +15,7 @@ export default class Table extends Component {
     if(!this.props.headers) return <div>Loading...</div>
     return (
       <div className={cx('table')}>
-        <Headers headers={this.props.headers} dragCol={this.props.dragCol}/>
+        <Headers headers={this.props.headers} dragCol={this.props.dragCol} resizeCol={this.props.resizeCol}/>
         <Grid grid={this.props.grid} headers={this.props.headers}
           disableAll={this.props.disableAll} searching={this.props.searching}
           filteredRows={this.props.filteredRows} />
