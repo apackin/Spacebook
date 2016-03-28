@@ -322,14 +322,6 @@ export default function sheet(state = {
     }
     case DRAG_TABLE_ROW:
     {
-      // let newState=_.cloneDeep(state);
-      //
-      // let newGrid=action.panes.sort((a,b)=> a - b ).map(el => {
-      //   console.log(el.id)
-      //   return newState.grid[el.id];
-      // });
-      // newState.grid=newGrid;
-      // return newState;
       break;
     }
     case DRAG_TABLE_COL:
@@ -343,15 +335,12 @@ export default function sheet(state = {
           curr: Number(el.id)
         });
       });
-      console.log(newOrd);
 
       newState.grid.forEach((el,idx) => {
         for (var x=0; x<newOrd.length; x++) {
           el[newOrd[x].curr]=Object.assign({},stateCopy.grid[idx][newOrd[x].prev]);
         }
       })
-
-
       newOrd.forEach(el => {
         stateCopy.columnHeaders.forEach((cel,idx) => {
           if (cel.id == el.prev) {
@@ -361,11 +350,6 @@ export default function sheet(state = {
         })
       })
       newState.columnHeaders=_.orderBy(newState.columnHeaders,['id'],['asc']);
-
-        // let genNew=_.once(reorderCols);
-        // newState.columnHeaders=genNew(action.panes,state);
-
-
 
         console.log(newState.columnHeaders)
 

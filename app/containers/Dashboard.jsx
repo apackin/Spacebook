@@ -26,9 +26,6 @@ class Dashboard extends Component {
     if (!this.props.spaces) {
       this.props.dispatch(Actions.getSpaces());
     }
-    if (!this.props.user.details) {
-      this.props.dispatch(Actions.loadUserInfo())
-    }
   }
 
   createSpace() {
@@ -36,7 +33,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    console.log('rendered')
     return (
       <div>
         <Navigation disabled={true} />
