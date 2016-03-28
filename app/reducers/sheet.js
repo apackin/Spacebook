@@ -302,7 +302,7 @@ export default function sheet(state = {
         let addRowState = _.cloneDeep(state);
         let newRow = {}
         addRowState.columnHeaders.forEach(function(col) {
-          newRow[col.id] = { data: null, type: col.type, id: col.id + Math.floor((Math.random() * (99999999 - 111111) + 111111)) }
+          newRow[col.id] = { width: col.width ? col.width : null, data: null, type: col.type, id: col.id + Math.floor((Math.random() * (99999999 - 111111) + 111111)) }
         })
         addRowState.grid.push(newRow)
         return addRowState
@@ -310,9 +310,13 @@ export default function sheet(state = {
 
     case RESIZE_COL: {
       let newState=_.cloneDeep(state);
-
       newState.columnHeaders[Number(action.size.id)-100].width=action.size.rect.width;
       console.log(action.size);
+
+      newState.grid.forEach(row => {
+        row[action.size.id].width=action.size.rect.width;
+      })
+
       return newState;
 
     }

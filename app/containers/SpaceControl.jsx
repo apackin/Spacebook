@@ -15,15 +15,15 @@ import styles from 'css/components/space-control';
 
 const cx = classNames.bind(styles);
 
+
+
 class SpaceControl extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {searching: false};
     this.runUpdateCell = this.runUpdateCell.bind(this);
-    this.dragCol = this.dragCol.bind(this)
     this.toggleMagicBar = this.toggleMagicBar.bind(this);
-    this.resizeCol=this.resizeCol.bind(this);
-
+    this.searchSheet = this.searchSheet.bind(this);
   }
 
   componentWillMount() {
@@ -51,14 +51,6 @@ class SpaceControl extends Component {
       }
   }
 
-  dragCol(e) {
-    this.props.dispatch(SheetActions.colDrag(e))
-  }
-
-  resizeCol(e) {
-    this.props.dispatch(SheetActions.resizeCol(e))
-  }
-
   searchSheet(e) {
     this.props.dispatch(SheetActions.searchSheet(e.target.value))
   }
@@ -68,7 +60,7 @@ class SpaceControl extends Component {
     return (
       <div className={cx('SpaceControl')}>
         <div className={cx('ControlBar')}>
-          <Navigation space={this.props.space} />
+          <Navigation />
           <SheetsBar sheetToShow={this.props.sheetToShow}
             space={this.props.space}
             sheetNames={this.props.sheetNames}
@@ -80,7 +72,7 @@ class SpaceControl extends Component {
           searchSheet={this.searchSheet}
           searching={this.props.searching}
         />
-        <ShareModal />
+      <ShareModal space={this.props.space} />
         <Lookup />
       </div>
         <div className={cx('masterControl')}>
@@ -89,10 +81,8 @@ class SpaceControl extends Component {
               <Table
                 grid={this.props.sheet.grid}
                 headers={this.props.sheet.columnHeaders}
-                dragCol={this.dragCol}
                 searching={this.props.searching}
                 filteredRows={this.props.filteredRows}
-                resizeCol={this.resizeCol}
               />
             </div>
           </div>
@@ -102,6 +92,7 @@ class SpaceControl extends Component {
     );
   }
 }
+
 
 
 function mapStateToProps(store) {

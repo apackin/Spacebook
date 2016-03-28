@@ -14,7 +14,7 @@ function generateColumnOptions (headers) {
         <Pane
           className={cx('thead')}
           id={header.id}
-          key={key}
+          key={header.id}
           width={200}
           height={34}>
           <ColumnOptions data={header} key={header.id}/>
