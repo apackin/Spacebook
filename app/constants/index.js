@@ -17,15 +17,18 @@ export const LOAD_SPACE = 'LOAD_SPACE';
 export const LOAD_SHEET = 'LOAD_SHEET';
 export const ADD_SHEET_VIEW = 'ADD_SHEET_VIEW';
 export const LOAD_USER_SPACES = 'LOAD_USER_SPACES';
+export const LOAD_USER_INFO = 'LOAD_USER_INFO';
 export const SHOW_SHARE_MODAL = 'SHOW_SHARE_MODAL';
 export const CLOSE_SHARE_MODAL = 'CLOSE_SHARE_MODAL';
 export const SEARCHING = 'SEARCHING';
 export const SEARCH_SHEET = 'SEARCH_SHEET';
+export const UPDATE_SHEETS = 'UPDATE_SHEETS';
+export const UPDATE_REF_SHEET = 'UPDATE_REF_SHEET';
 
 
 // SHEET CONSTS
-export const UPDATE_FORMULA_CELL = 'UPDATE_FORMULA_CELL';
 export const UPDATE_CELL = 'UPDATE_CELL';
+export const UPDATE_CELL_BY_ID = 'UPDATE_CELL_BY_ID';
 export const SHOW_ROW_MODAL = 'SHOW_ROW_MODAL';
 export const CLOSE_ROW_MODAL = 'CLOSE_ROW_MODAL';
 export const ADD_ROW = 'ADD_ROW';
@@ -45,9 +48,14 @@ export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const CURRENT_CELL = 'CURRENT_CELL';
 export const DRAG_TABLE_ROW = 'DRAG_TABLE_ROW';
 export const DRAG_TABLE_COL = 'DRAG_TABLE_COL';
+export const MOVE_TO_CELL = 'MOVE_TO_CELL';
 export const CLEAR_SEARCH_GRID = 'CLEAR_SEARCH_GRID';
 export const CLEAR_FILTERED_ROWS = 'CLEAR_FILTERED_ROWS';
 export const RESIZE_COL = 'RESIZE_COL';
+
+// LOOKUP CONSTS
+export const SHOW_LOOKUP_MODAL = 'SHOW_LOOKUP_MODAL';
+export const CLOSE_LOOKUP_MODAL = 'CLOSE_LOOKUP_MODAL';
 
 // FormulaStore Constants
 export const FORMULA_UPLOAD = 'FORMULA_UPLOAD';
@@ -55,3 +63,6 @@ export const FORMULA_FETCH = 'FORMULA_FETCH';
 
 // NAV CONSTS
 export const CHANGE_SPACE_NAME = 'CHANGE_SPACE_NAME';
+
+//DASH CONSTS
+export const ADD_USER_SPACE = 'ADD_USER_SPACE';

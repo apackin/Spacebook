@@ -3,6 +3,7 @@ import Headers from './Headers';
 import Grid from './Grid';
 import RowModal from './RowModal';
 import AddRow from './AddRow';
+import MapContainer from 'containers/MapContainer';
 import classNames from 'classnames/bind';
 import styles from 'css/components/table';
 
@@ -21,6 +22,9 @@ export default class Table extends Component {
           filteredRows={this.props.filteredRows} />
         <AddRow />
         <RowModal className={cx('row-modal')}/>
+
+        <MapContainer />
+
       </div>
     );
   }

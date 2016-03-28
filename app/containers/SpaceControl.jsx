@@ -6,8 +6,9 @@ import Table from 'components/Sheet/Table';
 import * as Actions from '../actions/spacecontrols';
 import * as SheetActions from '../actions/sheet';
 import Navigation from 'containers/Navigation';
-import BottomBar from 'components/BottomBar';
+import BottomBar from 'components/BottomBar/BottomBar';
 import ShareModal from 'components/SpaceControls/ShareModal';
+import Lookup from 'components/Sheet/Lookup';
 import classNames from 'classnames/bind';
 import styles from 'css/components/space-control';
 
@@ -37,7 +38,7 @@ class SpaceControl extends Component {
   }
 
   runUpdateCell(evt, cellKey, rowIdx) {
-    this.props.dispatch(SheetActions.updateCell(evt, cellKey, rowIdx))
+    this.props.dispatch(SheetActions.updateCell(evt, cellKey, rowIdx, true))
   }
 
   toggleMagicBar() {
@@ -80,6 +81,7 @@ class SpaceControl extends Component {
           searching={this.props.searching}
         />
         <ShareModal />
+        <Lookup />
       </div>
         <div className={cx('masterControl')}>
           <div className={cx('scrollControl')}>
@@ -95,7 +97,7 @@ class SpaceControl extends Component {
             </div>
           </div>
         </div>
-        <BottomBar rows={this.props.sheet.grid.length}/>
+        <BottomBar grid={this.props.sheet.grid} columns={this.props.sheet.columnHeaders}/>
       </div>
     );
   }

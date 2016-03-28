@@ -75,7 +75,7 @@ class MenuEditCol extends Component {
 	render () {
 		let columnTypes = {
 			'Text': (<OtherMenuItem description='A single line of text.' />),
-			'Number': (<OtherMenuItem description='A number feild.' />),
+			'Number': (<OtherMenuItem description='A number field.' />),
 			'Formula': (
 				<FormulaMenuItem
 					handleFormulaNameChange={this.handleFormulaNameChange}
@@ -90,15 +90,16 @@ class MenuEditCol extends Component {
 			'Checkbox': (<OtherMenuItem description='Create checkboxes' />),
 			'Select': (<OtherMenuItem description='Select a single predefined option from a dropdown' />),
 			'Link': (<OtherMenuItem description='Create a link to an external site ' />),
+			'Reference': (<OtherMenuItem description='Link to another sheet'/>)
 		}
 
 		function generateTypes () {
 			var MenuItems = [];
-			for (let feildType in columnTypes) {
-				MenuItems.push(<MenuItem key={MenuItems.length} eventKey={feildType}>{feildType}</MenuItem>);
+			for (let fieldType in columnTypes) {
+				MenuItems.push(<MenuItem key={MenuItems.length} eventKey={fieldType}>{fieldType}</MenuItem>);
 			}
 			return MenuItems;
-			}
+		}
 
 		return (
 				<div className={cx('editNameAndType')}>

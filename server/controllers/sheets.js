@@ -30,7 +30,7 @@ exports.one = function(req, res) {
     workspace: req.params.spaceId, 
     content: { 
         grid: req.body.grid || [], 
-        columnHeaders: req.body.columnHeaders || []
+        columnHeaders: req.body.columnHeaders || [{ id: '100', type: 'ID', name: 'Record Name', idx: 0 }]
       }
     })
     .then(sheet => res.json(sheet))
@@ -53,10 +53,11 @@ exports.one = function(req, res) {
  * Update/Save a Sheet
  */
 exports.update = function(req, res) {
-  Sheet.findByIdAndUpdate(req.params.id, { 
-    content: req.body, 
-    $push: {"history": {columnHeaders: req.body.columnHeaders, grid: req.body.grid }}
-  }, {new: true})
+  var data = { 
+    content: req.body.sheet, 
+  }
+  if (req.body.commit) data['$push'] = {"history": {columnHeaders: req.body.sheet.columnHeaders, grid: req.body.sheet.grid }}
+  Sheet.findByIdAndUpdate(req.params.id, data, {new: true})
   .then((sheet) => res.status(200).json(sheet))
   .catch((err) => {
     console.log(err)

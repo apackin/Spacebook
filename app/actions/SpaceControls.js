@@ -25,11 +25,43 @@ export function updateSheet(history) {
   }
 }
 
-export function saveSheet(sheetId, sheet){
-  return (dispatch) => {
-    request.put(`/sheet/${sheetId}`, sheet)
-    .then(res => dispatch(updateSheet(res.data.history)))
+export function saveAllSheets(sheets, currSheet) {
+  sheets.forEach((sheet)=>{
+    if (sheet._id !== currSheet._id) request.put(`/sheet/${sheet._id}`, {sheet: sheet.content})
+  })
+  return {
+    type: "none"
   }
+}
+
+export function saveSheet(sheetId, sheet, commit){
+  return (dispatch) => {
+    request.put(`/sheet/${sheetId}`, {sheet, commit})
+    .then(res => {
+      dispatch(updateSheet(res.data.history))
+      return null
+    })
+    .then(() => dispatch(updateSheetsArray(sheetId, sheet)))
+  }
+}
+
+export function updateRefSheet(targetSheet,data,currSheet,currRow) {
+  return {
+    type: types.UPDATE_REF_SHEET,
+    targetSheet,
+    data,
+    currSheet,
+    currRow
+  };
+}
+
+function updateSheetsArray(sheetId, sheetContent, dbSheet) {
+  return {
+    type: types.UPDATE_SHEETS,
+    sheetId: sheetId,
+    sheetContent: sheetContent,
+    dbSheet: dbSheet
+  };
 }
 
 export function loadSpace(obj) {
@@ -37,11 +69,48 @@ export function loadSpace(obj) {
     type: types.LOAD_SPACE,
     space: obj.space,
     sheetToShow: obj.sheetToShow,
-    sheetNames: obj.sheetNames
+    sheetNames: obj.sheetNames,
+    sheets: obj.sheets
   };
 }
 
+function fetchUpdatesFromOtherSheets(sheets, sheetToShow) {
+  function updateCellData(cell) {
+    cell.data.map((item)=>{
+      let refSheet = sheets.filter((sheet)=> sheet._id === item.sheet)
+      if (refSheet.length){
+        refSheet[0].content.grid.forEach((orow) => {
+          for (let key in orow) {
+            if (orow[key].id === item.rowId.id) {
+              item.data = orow[key].data
+            };
+          }
+        })
+      }
+      return item
+    })
+  }
+
+  function findRefs(grid) {
+    grid.forEach((row)=>{
+        for (let key in row) {
+          if (row[key].type === 'Reference' && row[key].data && row[key].data.length){
+            updateCellData(row[key])
+          }
+        }
+      })
+  }
+
+  let refCols = sheetToShow.content.columnHeaders.filter((col)=> col.type === 'Reference')
+  if (refCols.length) {
+    findRefs(sheetToShow.content.grid)
+  }
+}
+
 export function changeSheet(obj) {
+  if (obj.sheets) {
+    fetchUpdatesFromOtherSheets(obj.sheets, obj.sheetToShow)
+  }
   return {
     type: types.CHANGE_SHEET,
     sheet: obj.sheetToShow.content,
@@ -57,11 +126,13 @@ export function getSpace(spaceId) {
       dispatch(loadSpace({
         space: res.space,
         sheetToShow: res.sheet,
-        sheetNames: res.sheetNames
+        sheetNames: res.sheetNames,
+        sheets: res.sheets
       }))
       return res
     }).then(res => dispatch(changeSheet({
-        sheetToShow: res.sheet
+        sheetToShow: res.sheet,
+        sheets: res.sheets
       })));
   };
 }
@@ -73,7 +144,7 @@ export function loadSheet(obj) {
   };
 }
 
-export function getSheet(sheetId) {
+export function getSheet(sheetId, sheets) {
   return (dispatch) => {
     request(`/sheet/${sheetId}`)
     .then((res) => {
@@ -82,7 +153,8 @@ export function getSheet(sheetId) {
       }))
       return res.data
     }).then(res => dispatch(changeSheet({
-        sheetToShow: res
+        sheetToShow: res,
+        sheets: sheets
       })));
   };
 }
@@ -99,10 +171,16 @@ export function addSheet(spaceId, sheet) {
   return (dispatch) => {
     request.post(`/sheet/${spaceId}`, sheet)
     .then(res => res.data)
-    .then(res => dispatch(addSheetToView({
-      newSheetId: res._id,
-      sheetName: res.name
-    })))
+    .then(res => {
+      dispatch(addSheetToView({
+        newSheetId: res._id,
+        sheetName: res.name
+      }))
+      return res
+    })
+    .then(sheet => {
+      dispatch(updateSheetsArray(sheet._id, sheet.content, sheet))
+    })
   }
 }
 

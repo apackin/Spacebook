@@ -9,7 +9,7 @@ import _ from 'lodash';
 const cx = classNames.bind(styles);
 
 function generateColumnOptions (headers) {
-  return headers.map((header, key) => {
+  return headers.map((header) => {
       return (
         <Pane
           className={cx('thead')}

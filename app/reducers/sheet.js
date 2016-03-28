@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import {
-  UPDATE_FORMULA_CELL,
   UPDATE_CELL,
   SHOW_ROW_MODAL,
   CLOSE_ROW_MODAL,
@@ -24,11 +23,19 @@ import {
   SEARCH_SHEET,
   CLEAR_SEARCH_GRID,
   CLEAR_FILTERED_ROWS,
-  RESIZE_COL
+  RESIZE_COL,
+  SHOW_LOOKUP_MODAL,
+  CLOSE_LOOKUP_MODAL,
+  UPDATE_CELL_BY_ID,
+  MOVE_TO_CELL,
+  SHOW_MAP,
+  HIDE_MAP
+
 } from 'constants/index';
 import {
   insertNewColInRows,
-  runCustomFunc
+  runCustomFunc,
+  navToNewCell
 } from './sheetHelpers.js';
 
 export default function sheet(state = {
@@ -40,8 +47,13 @@ export default function sheet(state = {
     case CLEAR_SHEET:
       return {}
     case CHANGE_SHEET:
+      action.sheet.grid.forEach(row => {
+        for (let cell in row){
+          row[cell].focused = false;
+        }
+      })
       return {
-        columnHeaders: action.sheet.columnHeaders || [],
+        columnHeaders: action.sheet.columnHeaders || [{ id: '100', type: 'ID', name: 'Record Name', idx: 0 }],
         grid: action.sheet.grid || [],
         history: action.history || [],
         historySheet: action.historySheet || null,
@@ -55,18 +67,45 @@ export default function sheet(state = {
     case UPDATE_CELL:
       {
         let newState = _.cloneDeep(state);
+        if(action.fromSuper) newState.grid[newState.currentCell.rowIdx][newState.currentCell.cellKey].focused = false;
         newState.grid[action.cell.idx][action.cell.key].data = action.cell.data
+        newState.currentCell.cell.data = action.cell.data;
+        action.formulaCells.forEach(cell =>{
+          let data = runCustomFunc(newState, newState.grid[action.cell.idx], cell.formula);
+          newState.grid[action.cell.idx][cell.col].data = data;
+        })
         return newState
       }
-    case UPDATE_FORMULA_CELL:
+    case UPDATE_CELL_BY_ID:
+      console.log(action.cell.data)
       {
         let newState = _.cloneDeep(state);
-        let data = runCustomFunc(newState, action.row, action.formula);
-        newState.grid[action.cell.idx][action.cell.key].data = data;
+        newState.grid.forEach(function(row){
+          for (let key in row) {
+            if (row[key].id == action.cell.id) {
+              row[key].data = action.cell.data;
+              break;
+            }
+          }
+        })
         return newState
       }
-    case CURRENT_CELL:
-      return Object.assign({}, state, {currentCell : action.cell})
+    case MOVE_TO_CELL:{
+          let newState = _.cloneDeep(state);
+          let newCoord = navToNewCell(action.keyCode, newState)
+          newState.grid[newState.currentCell.rowIdx][newState.currentCell.cellKey].focused = false;
+          newState.currentCell.cell = state.grid[newCoord.newRowIdx][newCoord.newColId];
+          newState.currentCell.rowIdx = newCoord.newRowIdx;
+          newState.currentCell.cellKey = newCoord.newColId;
+          newState.grid[newCoord.newRowIdx][newCoord.newColId].focused = true;
+          return newState}
+    case CURRENT_CELL:{
+          let newState = _.cloneDeep(state);
+          if(newState.currentCell) newState.grid[newState.currentCell.rowIdx][newState.currentCell.cellKey].focused = false;
+          newState.currentCell = action.cell;
+          if(action.cell) newState.grid[action.cell.rowIdx][action.cell.cellKey].focused = true;
+          // find cell and give it focus
+          return newState}
     case UPDATE_MODAL_CELL:
       {
         let modalRowState = _.cloneDeep(state);
@@ -76,6 +115,23 @@ export default function sheet(state = {
           modalRowState.modalRow.data[action.cell.key].data = action.cell.data
         }
         return modalRowState
+      }
+    case SHOW_LOOKUP_MODAL:
+      {
+        let newState = _.cloneDeep(state)
+        newState.showLookupModal = true;
+        newState.lookup = {
+          row: action.row,
+          cell: action.cell,
+          rowIdx: action.rowIdx
+        }
+        return newState
+      }
+    case CLOSE_LOOKUP_MODAL:
+      {
+        let modalCloseState = _.cloneDeep(state)
+        modalCloseState.showLookupModal = false;
+        return modalCloseState
       }
     case SHOW_ROW_MODAL:
       {
@@ -246,11 +302,12 @@ export default function sheet(state = {
         let addRowState = _.cloneDeep(state);
         let newRow = {}
         addRowState.columnHeaders.forEach(function(col) {
-          newRow[col.id] = { data: null, type: col.type }
+          newRow[col.id] = { data: null, type: col.type, id: col.id + Math.floor((Math.random() * (99999999 - 111111) + 111111)) }
         })
         addRowState.grid.push(newRow)
         return addRowState
       }
+
     case RESIZE_COL: {
       let newState=_.cloneDeep(state);
 
@@ -312,7 +369,26 @@ export default function sheet(state = {
       return newState;
 
     }
+
+    case SHOW_MAP:
+      let showMapState = _.cloneDeep(state);
+      showMapState.showMap = true;
+      return showMapState;
+    case HIDE_MAP:
+        let hideMapState = _.cloneDeep(state);
+        hideMapState.showMap = false;
+        return hideMapState;
+
     default:
       return state;
+  }
+}
+
+
+function decorationType (cell) {
+  switch (cell.type) {
+    case 'Images': return '["' + cell.data.join('","') + '"]';
+    case 'Formula': case 'Link': case 'Text': return '"' + cell.data + '"';
+    default: return cell.data;
   }
 }

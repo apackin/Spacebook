@@ -7,6 +7,7 @@
     width: 1000px;
     height: 1500px;
     overflow-y: scroll;
+    min-height: 300px
 
 }
 
@@ -45,6 +46,10 @@
 
 .columnCarrat {
     float: right;
+}
+
+.columnType {
+  float: left
 }
 
 .columnWidth {
@@ -156,6 +161,13 @@
     z-index: 100;
     width: 200px;
 }
+
+.cellCheckBox {
+  margin-left: 50px;
+  width: 100%;
+  height: 25px;
+}
+
 
 .first-cell {
     width: 160px;

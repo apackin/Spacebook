@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
-import { sortColumn, removeColumn, insertColumn, formulaColumn } from 'actions/sheet';
+import { sortColumn, removeColumn, insertColumn, formulaColumn, showMap } from 'actions/sheet';
 import styles from 'css/components/table';
 import { DropdownButton, Glyphicon, Dropdown } from 'react-bootstrap';
 import { MenuItem } from 'react-bootstrap';
@@ -13,7 +13,9 @@ const cx = classNames.bind(styles);
 class ColumnOptions extends Component {
 	constructor(props,state){
 		super(props, state);
-		this.state = {view: (this.props.data.type ? 'dropdown' : 'editNameAndType')};
+		this.state = {
+			view: (this.props.data.type ? 'dropdown' : 'editNameAndType')
+		};
 		this.handleSelection = this.handleSelection.bind(this);
 		this.changeType = this.changeType.bind(this);
 		this.duplicate = this.duplicate.bind(this);
@@ -23,6 +25,8 @@ class ColumnOptions extends Component {
 		this.removeCol = this.removeCol.bind(this);
 		this.insertLeft = this.insertLeft.bind(this);
 		this.insertRight = this.insertRight.bind(this);
+		this.showMap = this.showMap.bind(this);
+		this.dataType = this.dataType.bind(this);
 	}
 
 	handleSelection(evt, evtKey){
@@ -30,12 +34,10 @@ class ColumnOptions extends Component {
 	}
 
 	exitTypeMenu() {
-		console.log('ColOpt exitTypeMenu');
 		this.setState({view: 'dropdown'});
 	}
 
 	changeType() {
-		console.log('changeTypeorName');
 		this.setState({view: 'editNameAndType'});
 	}
 
@@ -66,6 +68,36 @@ class ColumnOptions extends Component {
 		this.props.dispatch(sortColumn(this.props.data.id, -1));
 	}
 
+	showMap() {
+		this.props.dispatch(showMap());
+	}
+
+	dataType() {
+		if(!this.props.data) return ''
+		switch (this.props.data.type) {
+			case 'Text':
+				return 'font';
+			case 'Number':
+				return 'plus';
+			case 'Checkbox':
+				return 'check';
+			case 'Reference':
+				return 'retweet';
+			case 'ID':
+				return 'cog';
+			case 'Formula':
+				return 'console';
+			case 'Images':
+				return 'camera';
+			case 'Link':
+				return 'link';
+			case 'Select':
+				return 'menu-hamburger';
+			default:
+				return 'cog';
+		}
+	}
+
 	render () {
 		let viewing;
 		if (!this.state || this.state.view === 'dropdown') {
@@ -78,19 +110,23 @@ class ColumnOptions extends Component {
 					<MenuItem key="8" eventKey="insertRight"> Insert Right </MenuItem>,
 					<MenuItem key="4" eventKey="sortAsc">Sort A -> Z</MenuItem>,
 					<MenuItem key="5" eventKey="sortDec">Sort Z -> A</MenuItem>,
-					<MenuItem key="6" eventKey="removeCol">Delete Column</MenuItem>
+					<MenuItem key="9" eventKey="showMap">View as Map</MenuItem>
 					];
+
+				if(this.props.data.id !== "100") items.push(<MenuItem key="6" eventKey="removeCol">Delete Column</MenuItem>);
+
 				return items;
 			}
 
 			viewing = (
 				<Dropdown id="dropdown-custom-1" onSelect={this.handleSelection} className={cx('columnWidth')}>
 			      <Dropdown.Toggle noCaret className={cx('thead')}>
-			        {this.props.data.name}
+							<Glyphicon className={cx('columnType')} glyph={this.dataType()} />
+							{this.props.data.name}
 							<Glyphicon className={cx('columnCarrat')} glyph="menu-down" />
 			      </Dropdown.Toggle>
 			      <Dropdown.Menu className={cx('columnWidth')}>
-			      	{generateMenuItems()}
+			      	{generateMenuItems.call(this)}
 			      </Dropdown.Menu>
 			    </Dropdown>)
 

@@ -16,6 +16,7 @@
 .spaces {
   margin: 0 auto;
   width: 500px;
+  min-height: 162px;
   font-size: 150%;
   /*margin-left: 10px;*/
   line-height: 200%;
@@ -31,5 +32,9 @@
 }
 
 .profData {
+
+}
+
+.addSpace {
 
 }
