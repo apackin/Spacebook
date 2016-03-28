@@ -23,16 +23,6 @@ function generateColumnOptions (headers) {
   })
 }
 
-// const paneStyle = {
-//   fontSize: "40px",
-//   textAlign:"center",
-//   paddingTop:"60px",
-//   height:"200px",
-//   border: "solid 1px #ccc",
-//   borderRadius: "5px",
-//   backgroundColor: "#fff"
-// };
-
 
 const Headers = (props) => {
 
